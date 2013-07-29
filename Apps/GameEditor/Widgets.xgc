@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<Library Name="Widgets">
+  <Class Name="Dialog" CodeBehind="xgc3.Widgets" />
+  <Class Name="Widget" CodeBehind="xgc3.Widgets"></Class>
+  <Class Name="Window" CodeBehind="xgc3.Widgets"></Class>
+
+  <Class Name="Label" BaseClass="View">
+    <Attribute Name="Text" Type="String" />
+    <Attribute Name="Color" Type="Microsoft.Xna.Framework.Graphics.Color" DefaultValue="Microsoft.Xna.Framework.Graphics.Color.Black" />
+    <Handler Name="Create">
+      <![CDATA[ Console.WriteLine( "Hello world!" + self.Name); ]]>
+    </Handler>
+    <Handler Name="Draw">
+      <![CDATA[ 
+          Vector2 p = new Vector2(self.X, self.Y);
+          string text = self.Text;
+          if( text == null)
+          {
+            text = self.Name;
+          }
+          self.GameMgr.Game.GameComponent.SpriteB.DrawString(self.GameMgr.Game.FontMgr.Courier, text, p, self.Color);
+        ]]>
+    </Handler>
+  </Class>
+
+  <Class Name="FPS" BaseClass="Label">
+    <Handler Name="Step">
+      <![CDATA[ 
+        xgc3.GameObjects.GameTimer gameTimer = other as xgc3.GameObjects.GameTimer;
+        this.Text = string.Format( this.Format, Math.Round( gameTimer.FPS, 2));
+        ]]>
+    </Handler>
+
+    <Attribute Name="Format" Type="string" DefaultValue = "FPS: {0}" Protection="public" />
+
+  </Class> 
+  
+  <Class Name="TextBox" BaseClass="View">
+
+    <Attribute Name="Text" Type="String" />
+    <Attribute Name="Color" Type="Microsoft.Xna.Framework.Graphics.Color" DefaultValue="Microsoft.Xna.Framework.Graphics.Color.Pink" />
+
+    <!-- Test only. An enumerated property-->
+    <Attribute Name="MouseState" Type="xgc3.GameComponents.ExtendedMouseButtonState" />
+    <Handler Name="Create">
+      <![CDATA[ Console.WriteLine( "Hello world!" + self.Name); ]]>
+    </Handler>
+
+    <Handler Name="Draw">
+      <![CDATA[ 
+          Vector2 p = new Vector2(self.X, self.Y);
+          self.GameMgr.Game.GameComponent.SpriteB.DrawString(self.GameMgr.Game.FontMgr.Courier, self.Text, p, self.Color);
+        ]]>
+    </Handler>
+  </Class>
+
+  <Class Name="BaseComponent" BaseClass="View" >
+    <Attribute Name="_enabled" Type="Boolean" DefaultValue="true" Protection="protected"/>
+    <Attribute Name="Clickable" Type="Boolean" DefaultValue="true" Protection="public"/>
+  </Class>
+
+  <Class Name="Button" BaseClass="BaseComponent">
+
+     <!-- Example of local resources -->
+    <Resource Name="normal" AssetName="button_normal" Type="Sprite"/>
+    <Resource Name="down" AssetName="button_down" Type="Sprite" />
+    <Resource Name="over" AssetName="button_over" Type="Sprite" />
+    <Resource Name="disabled" AssetName="button_disabled" Type="Sprite" />
+
+    <Attribute Name="Resource" Type="xgc3.Resources.SpriteResource" />
+    
+    <!--- Since basebutton is frequently used as part of another component,
+              default is false. -->
+    <Attribute Name="Focusable" Type="Boolean" DefaultValue="false"/>
+
+    <!--- This event is sent when button the clicked. -->
+    <Event Name="Click" />
+
+    <!---  @access private -->
+    <Attribute Name="_msdown" DefaultValue="false" Type="Boolean" />
+    <!---  @access private -->
+    <Attribute Name="_msin" DefaultValue="false" Type="Boolean" />
+    
+    <!--- @access private -->
+    <Method Name="_callShow">
+      <![CDATA[
+            if ( this._msdown && this._msin ) this.ShowDown();
+            else if ( this._msin ) this.ShowOver();
+            else this.ShowUp();
+        ]]>
+    </Method>
+
+    <!--- When the space bar is down, basebutton shows its down state. -->
+    <Method Name="DoSpaceDown">
+      <![CDATA[
+            if ( this._enabled) {
+                this.ShowDown();
+            }
+            ]]>
+    </Method>
+
+    <!--- When the space bar is up, basebutton shows its up state. -->
+    <Method Name="DoSpaceUp">
+      <![CDATA[
+            if ( this._enabled) {
+                this.Raise_Click( this, null, null);
+                this.ShowUp();
+            }
+            ]]>
+    </Method>
+
+    <!--- Called by the button manager when this button is the default-->
+    <Method Name="DoEnterDown">
+      <![CDATA[
+      if ( this._enabled ){
+      this.ShowDown( );
+      }
+        ]]>
+    </Method>
+
+    <!--- Called by the button manager when this button is the default-->
+    <Method Name="DoEnterUp">
+      <![CDATA[
+      if ( this._enabled ){
+        this.Raise_Click( this, null, null);
+        this.ShowUp( );
+      }
+        ]]>
+    </Method>
+
+    <Handler Name="MouseOver">
+      <![CDATA[
+      this._msin = true;
+      this._callShow();
+        ]]>
+      </Handler>
+
+    <Handler Name="MouseOut">
+      <![CDATA[
+      this._msin = false;
+      this._callShow();
+        ]]>
+      </Handler>
+
+    <Handler Name="LeftMouseDown">
+      <![CDATA[
+      this._msdown = true;
+      this._callShow();
+        ]]>
+      </Handler>
+
+    <Handler Name="LeftMouseUp">
+      <![CDATA[
+      this._msdown = false;
+      this._callShow();
+      this.Raise_Click( this, null, null);
+        ]]>
+      </Handler>
+
+    <!--- Sets clickable to true and shows appropriate resource.
+              @access private -->
+    <Method Name="_showEnabled">
+      <![CDATA[
+            this.Clickable = _enabled;
+            ShowUp();
+        ]]>
+    </Method>
+
+    <!--- This function is called whenever the button's visible state
+              should appear to be down.
+               -->
+    <Method Name="ShowDown" >
+      <![CDATA[
+      this.Resource = down;
+        ]]>
+    </Method>
+
+    <!--- This function is called whenever the button's visible state
+              should appear to be up. 
+              -->
+    <Method Name="ShowUp" >
+      <![CDATA[
+            if (!_enabled ) 
+            { 
+                this.Resource = disabled;
+            } 
+            else 
+            {
+                this.Resource = normal;
+            }
+        ]]>
+    </Method>
+
+    <!--- This function is called whenever the button's visible state should
+              appear to be hilited to indicate that it can be clicked.  -->
+    <Method Name="ShowOver" >
+      <![CDATA[ 
+      this.Resource = over;
+        ]]>
+    </Method>
+
+    <Attribute Name="Text" Type="String" />
+    <Attribute Name="Color" Type="Microsoft.Xna.Framework.Graphics.Color" />
+
+    <Handler Name="Create">
+      <![CDATA[ 
+            Console.WriteLine( "Sprite - Create");
+            this.Resource = normal;
+      ]]>
+    </Handler>
+
+    <Handler Name="Destroy">
+      <![CDATA[ 
+            Console.WriteLine( "Sprite - Destroy");
+            // TODO - Free up resources?
+      ]]>
+    </Handler>
+    
+    <Handler Name="Draw">
+      <![CDATA[ 
+            //Console.WriteLine( "Sprite - Draw");
+            if (self.Resource != null)
+            {
+                Vector2 p = new Vector2(self.X, self.Y);
+                
+                // Scale button graphic...
+                DrawTiledTexture( self.GameMgr.Game.GameComponent.SpriteB, self.Resource.GetTexture( self.GameMgr), self.X, self.Y, self.Width, self.Height, Color.White, 5);
+                
+                // Now, draw the text inside the button.
+                Rectangle textBounds;
+                Rectangle r = new Rectangle( self.X, self.Y, self.Width, self.Height);
+                DrawString( self.GameMgr.Game.GameComponent.SpriteB, self.GameMgr.Game.FontMgr.Courier, self.Text, r,
+                    Color.Black, TextAlignment.Middle, true, new Vector2(0,0), out textBounds);
+
+            }
+            else
+            {
+                // When no resource, Just draw name.
+                Vector2 p = new Vector2(self.X, self.Y);
+                self.GameMgr.Game.GameComponent.SpriteB.DrawString(self.GameMgr.Game.FontMgr.Courier, self.Name, p, Color.Red);
+            }
+        ]]>
+    </Handler>
+  </Class>
+
+
+</Library>

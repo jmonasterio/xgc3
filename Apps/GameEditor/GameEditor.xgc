@@ -1,0 +1,126 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- Creates a class of type Applicaion, which is the root -->
+<Application Name="GameObjects">
+  <Include Name="Core.xgc" />
+  <Include Name="GameObjects.xgc" />
+  <Include Name="Widgets.xgc" />
+
+  <StyleSheet Name="Sheet1">
+    <Selector Type="Universal" Selects="*">
+<!--
+      <StyleAttribute Property="X" Value="6"/>
+      <StyleAttribute Property="Text" Value="Dog"/>
+      -->
+    </Selector>
+    <Selector Type="Id" Selects="flower3">
+      <StyleAttribute Property="Y" Value="16"/>
+    </Selector>
+    <Selector Type="Id" Selects="flower4">
+      <StyleAttribute Property="Text" Value="Not George"/>
+      <StyleAttribute Property="Color" Value="Red"/>
+    </Selector>
+  </StyleSheet>
+
+  <!-- Adds an attribute GameInfo, of type GameInfo-->
+  <GameInfo Name="GameInfo" Title="Game Editor">
+    <Handler Name="Create">
+      <![CDATA[ Console.WriteLine( "Hello world!"); ]]>
+    </Handler>
+  </GameInfo >
+  
+  <!-- Adds an attribute, flower, of type SpriteResource to GlobalResources. WIth property flower.png -->
+  <SpriteResource Name="flower" AssetName="flower.png" />
+
+
+  <Class Name="Test" BaseClass="Instance">
+    <Handler Name="Create">
+      <![CDATA[ Console.WriteLine( "Hello world!"); ]]>
+    </Handler>
+
+    <!-- What does this compile to? Creates an attribute of this type/name in the class -->
+    <Sprite Name="gun" X="10" Y="50" Resource="GlobalResources.gun" />
+
+    <!-- What about this??? Creates a nested class AND an attribute of that nest-class type/name -->
+    <Sprite Name="flower2" X="10" Y="50" Resource="GlobalResources.flower" >
+      <Handler Name="Create">
+        <![CDATA[ Console.WriteLine( "Hello world!"); ]]>
+      </Handler>
+    </Sprite>
+
+  </Class>
+  
+  <Room Name="Editor">
+
+    <!-- This handles an event handler on class Application.Room -->
+    <Handler Name="Create">
+      <![CDATA[ Console.WriteLine( "Hello world!"); ]]>
+    </Handler>
+
+    <!-- Supported but not used often... Add attributes/methods/events to an instance (added to the class) -->
+    <Attribute Name="Test" Type="String"/>
+    <Method Name="Foo" Params="String name, String value" Return="void">
+      <![CDATA[ { Console.WriteLine( "dog"); return;} ]]>
+    </Method>
+    <Event Name="BarEvent">
+      <![CDATA[ Console.WriteLine( "Hello world!"); ]]>
+    </Event>
+
+    <!-- Here is a contained instance that has an event handler -->
+    <Sprite Name="flower3" X="10" Y="50" Resource="SpriteTest" >
+      <Handler Name="Create">
+        <![CDATA[ Console.WriteLine( "Hello world!" + self.Name); ]]>
+      </Handler>
+      <Handler Name="Step">
+        <![CDATA[ self.X = self.X+1; if( self.X > 200) { self.X = 0;} ]]>
+      </Handler>
+    </Sprite>
+
+    <!-- Here is a contained instance that has an event handler -->
+    <TextBox Name="flower4" X="10" Y="50" Text="George" Color="Blue" MouseState="None">
+      <Handler Name="Create">
+        <![CDATA[ Console.WriteLine( "Hello world!" + self.Name); ]]>
+      </Handler>
+      <Handler Name="Step">
+        <![CDATA[ self.Y = self.Y+1; if( self.Y > 200) { self.Y = 0;} ]]>
+      </Handler>
+    </TextBox>
+
+    <Button Name="Button1" Text="Button With 2 lines" X="100" Y="100" Width="200" Height="50"   Resource="ButtonResources.normal">
+      <Handler Name="Click">
+        <![CDATA[ Console.WriteLine("Button click!"); ]]>
+      </Handler>
+    </Button>
+    <Label Name="Label1" Text="Label" X="80" Y="80" ></Label>
+    <FPS Name="FramesPerSecond" Format="FPS: {0:0.00}" X="300" Y="100" />
+    <TextBox Name="TextBox1" Text="TextBox" X="60" Y="60" >
+      <Handler Name="Draw">
+        <![CDATA[ 
+          Vector2 p = new Vector2(self.X, self.Y);
+          self.GameMgr.Game.GameComponent.SpriteB.DrawString(self.GameMgr.Game.FontMgr.Courier, self.Text, p, self.Color);
+        ]]>
+      </Handler>
+    </TextBox>
+
+  </Room>
+
+
+  <!-- Make a new instance that is copy of an instance but slightly different. 
+      Type and Clones must match existing item -->
+  <Room Name="Editor2" Clones="Editor" X="10" Y="10" >
+    
+    <!-- Made another instance above, but at different location 10,10 -->
+    
+    <!-- Do I really want to support adding even more event handlers here?? -->
+    <Handler Name="Create">
+      <![CDATA[ Console.WriteLine( "Hello world!"); ]]>
+    </Handler>
+    
+  </Room>
+
+  <!-- This is really goofy, but make a new class that inherits from an instance.
+      "Clones" attribute specify the instance -->
+  <Class Name="BetterRoom" Clones="Editor2" ></Class>
+  
+</Application>
+

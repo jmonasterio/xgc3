@@ -1,0 +1,98 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<Library Name="Core">
+  <Class Name="BaseInstanceClass" CodeBehind="xgc3.Core" />
+  <Class Name="Instance" CodeBehind="xgc3.Core" />
+  <Class Name="BaseRuntimeEnvInstance" CodeBehind="xgc3.RuntimeEnv" />
+
+
+  <Class Name="SpriteResource" CodeBehind="xgc3.Resources" />
+
+  <Class Name="GameInfo" BaseClass="BaseRuntimeEnvInstance" >
+    <Attribute Name="Title" Type="String" />
+  </Class>
+
+  <Class Name="StyleAttribute" CodeBehind="xgc3.RuntimeEnv"></Class>
+  <Class Name="Selector" CodeBehind="xgc3.RuntimeEnv" ChildrenTypeName="StyleAttribute" ></Class>
+  <Class Name="StyleSheet" CodeBehind="xgc3.RuntimeEnv" ChildrenTypeName="Selector" ></Class>
+
+  <Class Name="GameTimer" CodeBehind="xgc3.GameObjects" />
+
+</Library>
+
+<!-- The casecade: http://reference.sitepoint.com/css/cascade -->
+
+ 
+  <!--
+  <style name="xxx" selector-class="TextBox">
+    <Color>Blue</Color>
+    <BackgroundColor>Red</BackgroundColor>
+    
+  </style>
+
+  <style name="xxxd" selector=".TextBox">
+  </style>
+
+    <style selector="//xpath"></style>
+
+  <style selector-id="Flower3">
+    <Attribute name="BackgroundColor" value="red" />
+  </style>
+
+
+
+  <style selector="TextBox" rel="type"> < Parent >
+    <selector selector="Label" rel="child"> < Child >
+      <Attribute name="BackgroundColor" value="red" />
+    </selector>
+  </style>
+
+  -->
+  
+
+<!--
+  ids (each unique id sorted by order, specificity)
+  classes (each unique class sorted by order, specificity)
+  types (each unique type sorted by order, specificty)
+  universals ( ordered by order)
+  
+  apply all the universal props
+
+
+
+  <style>
+      <Selector>
+        <Class name="dog" />
+        <Id name="cat" />
+        <Type name="TextBox" />
+        <Desc name="dog" />
+        <Child name="child" />
+        <Universal />
+        <Attribute name="name" value="jorge" />
+        <Attribute name="name" regex="jorge" />
+      </Selector>
+      <Color>Blue</Color>
+      <BackgroundColor>Red</BackgroundColor>
+
+    </style>
+
+    * 	 Universal Selector
+    E 	Type Selector
+    E F 	Descendent Selector 	(Optional?)
+    E > F 	Child Selector
+    E[ foo="bar" ] 	Attribute Selector 	(Only attributes marked final)
+    E#myid 	ID Selector ==>Same as E[id="myid"]
+
+    # Type selectors
+    # Class selectors
+    # ID selectors
+    # Descendant selectors
+    # Child selectors
+    # Universal selectors
+    # Adjacent sibling selectors
+    # Attribute selectors
+
+  </style>
+</Css>
+-->
+  

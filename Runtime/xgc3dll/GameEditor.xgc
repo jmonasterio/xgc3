@@ -1,0 +1,102 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- Creates a class of type Applicaion, which is the root -->
+<Application Name="GameObjects">
+  <Include Name="Core.xgc" />
+  <Include Name="GameObjects.xgc" />
+  <Include Name="Widgets.xgc" />
+
+  <!-- Adds an attribute GameInfo, of type GameInfo-->
+  <GameInfo Name="GameInfo" Title="Game Editor">
+    <Handler Name="Create">
+      <![CDATA[ Console.WriteLine( "Hello world!"); ]]>
+    </Handler>
+  </GameInfo >
+  
+  <!-- Adds an attribute, GlobalResources, of type ResourceCollection -->
+  <ResourceCollection Name="GlobalResources">
+    <!-- Adds an attribute, flower, of type SpriteResource to GlobalResources. WIth property flower.png -->
+    <SpriteResource Name="flower" FileName="flower.png" />
+  </ResourceCollection>
+
+  <Class Name="Test" BaseClass="Instance">
+    <Handler Name="Create">
+      <![CDATA[ Console.WriteLine( "Hello world!"); ]]>
+    </Handler>
+
+    <!-- What does this compile to? Creates an attribute of this type/name in the class -->
+    <Sprite Name="gun" X="10" Y="50" Resource="GlobalResources.gun" />
+
+    <!-- What about this??? Creates a nested class AND an attribute of that nest-class type/name -->
+    <Sprite Name="flower2" X="10" Y="50" Resource="GlobalResources.flower" >
+      <Handler Name="Create">
+        <![CDATA[ Console.WriteLine( "Hello world!"); ]]>
+      </Handler>
+    </Sprite>
+
+  </Class>
+  
+  <Room Name="Editor">
+    
+    <!-- This handles an event handler on class Application.Room -->
+    <Handler Name="Create">
+      <![CDATA[ Console.WriteLine( "Hello world!"); ]]>
+    </Handler>
+
+    <!-- Supported but not used often... Add attributes/methods/events to an instance (added to the class) -->
+    <Attribute Name="Test" Type="String"/>
+    <Method Name="Foo" Params="(String name, String value)" Return="void">
+      <![CDATA[ { return "dog"} ]]>
+    </Method>
+    <Event Name="BarEvent">
+      <![CDATA[ Console.WriteLine( "Hello world!"); ]]>
+    </Event>
+
+    <ResourceCollection Name="LocalResources">
+      <!-- Example of local resources -->
+      <SpriteResource Name="house" FileName="house.png" />
+    </ResourceCollection>
+
+    <!-- Here is a contained instance that has an event handler -->
+    <Sprite Name="flower3" X="10" Y="50" Resource="GlobalResources.flower" >
+      <Handler Name="Create">
+        <![CDATA[ Console.WriteLine( "Hello world!" + self.Name); ]]>
+      </Handler>
+      <Handler Name="Step">
+        <![CDATA[ self.X = self.X+1; if( self.X > 200) { self.X = 0;} ]]>
+      </Handler>
+    </Sprite>
+
+    <!-- Here is a contained instance that has an event handler -->
+    <!--
+    <Sprite2 Name="flower4" X="100" Y="500" Resource="GlobalResources.flower" >
+      <Handler Name="Create">
+        <![CDATA[ Console.WriteLine( "Hello world!" + self.Name); ]]>
+      </Handler>
+      <Handler Name="Step">
+        <![CDATA[ self.Y = self.Y+1; if( self.Y > 200) { self.Y = 0;} ]]>
+      </Handler>
+    </Sprite2>
+    -->
+
+  </Room>
+
+  <!-- Make a new instance that is copy of an instance but slightly different. 
+      Type and Clones must match existing item -->
+  <Room Name="Editor2" Clones="Editor" X="10" Y="10" >
+    
+    <!-- Made another instance above, but at different location 10,10 -->
+    
+    <!-- Do I really want to support adding even more event handlers here?? -->
+    <Handler Name="Create">
+      <![CDATA[ Console.WriteLine( "Hello world!"); ]]>
+    </Handler>
+    
+  </Room>
+
+  <!-- This is really goofy, but make a new class that inherits from an instance.
+      "Clones" attribute specify the instance -->
+  <Class Name="BetterRoom" Clones="Editor2" ></Class>
+  
+</Application>
+

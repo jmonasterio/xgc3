@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<Library Name="Core">
+  <Class Name="BaseInstanceClass" CodeBehind="xgc3.Core" />
+  <Class Name="Instance" CodeBehind="xgc3.Core" />
+  <Class Name="BaseRuntimeEnvInstance" CodeBehind="xgc3.RuntimeEnv" />
+
+
+  <Class Name="ResourceCollection" CodeBehind="xgc3.Resources" />
+  <Class Name="SpriteResource" CodeBehind="xgc3.Resources" />
+
+
+  <Class Name="GameInfo" BaseClass="BaseRuntimeEnvInstance" >
+    <Attribute Name="Title" Type="String" />
+  </Class>
+</Library>
+
+

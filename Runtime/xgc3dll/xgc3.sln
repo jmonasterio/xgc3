@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 9.00
+# Visual Studio 2005
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "xgc3", "xgc3\xgc3.csproj", "{47A6C82F-1D99-4073-BCAB-FF23078B225B}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x86 = Debug|x86
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{47A6C82F-1D99-4073-BCAB-FF23078B225B}.Debug|x86.ActiveCfg = Debug|x86
+		{47A6C82F-1D99-4073-BCAB-FF23078B225B}.Debug|x86.Build.0 = Debug|x86
+		{47A6C82F-1D99-4073-BCAB-FF23078B225B}.Release|x86.ActiveCfg = Release|x86
+		{47A6C82F-1D99-4073-BCAB-FF23078B225B}.Release|x86.Build.0 = Release|x86
+		{0AA458B6-8128-442E-9ABC-84FD4E85F9BB}.Debug|x86.ActiveCfg = Debug|x86
+		{0AA458B6-8128-442E-9ABC-84FD4E85F9BB}.Release|x86.ActiveCfg = Release|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

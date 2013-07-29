@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<Library Name="GameObjects">
+  <Class Name="Button" CodeBehind="xgc3.Widgets"></Class>
+  <Class Name="Dialog" CodeBehind="xgc3.Widgets" />
+  <Class Name="Label" CodeBehind="xgc3.Widgets"></Class>
+  <Class Name="Textbox" CodeBehind="xgc3.Widgets"></Class>
+  <Class Name="Widget" CodeBehind="xgc3.Widgets"></Class>
+  <Class Name="Window" CodeBehind="xgc3.Widgets"></Class>
+
+
+
+</Library>

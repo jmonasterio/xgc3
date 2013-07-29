@@ -1,0 +1,63 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<Library Name="GameObjects">
+  <Using Namespace="Microsoft.Xna.Framework.Graphics" />
+  <Using Namespace="xgc3.GameComponents" />
+
+  <Class Name="GameObject" CodeBehind="xgc3.GameObjects"></Class>
+  <Class Name="View" CodeBehind="xgc3.GameObjects" />
+  <Class Name="Container" CodeBehind="xgc3.GameObjects"></Class>
+  <Class Name="Room" CodeBehind="xgc3.GameObjects"></Class>
+  <Class Name="Sound" CodeBehind="xgc3.GameObjects"></Class>
+
+  <Class Name="Sprite" BaseClass="View">
+    <Attribute Name="AssetName" Type="String" />
+    <Attribute Name="Texture" Type="Texture2D" /> 
+
+    <Handler Name="Create">
+      <![CDATA[ 
+            Console.WriteLine( "Spite - Create");
+            string resource = self.Resource;
+            if (resource != null)
+            {
+                Texture2D texturePointer = self.GameMgr.Game.Content.Load<Texture2D>(resource);
+                self.Texture = texturePointer;
+            }
+      ]]>
+      </Handler>
+
+      <Handler Name="Destroy">
+        <![CDATA[ 
+            Console.WriteLine( "Spite - Destroy");
+            // TODO: Test Leak cleanup 
+            if (self.Texture != null)
+            {
+                self.Texture.Dispose();
+                self.Texture = null;
+            }
+      ]]>
+      </Handler>
+
+      <Handler Name="Draw">
+        <![CDATA[ 
+            //Console.WriteLine( "Sprite - Draw");
+            string resource = self.Resource;
+            if (resource != null)
+            {
+                Vector2 p = new Vector2(self.X, self.Y);
+                self.GameMgr.Game.GameComponent.SpriteB.Draw(self.Texture, p, Color.White);
+            }
+            else
+            {
+                // When no sprite? Just draw name.
+
+                Vector2 p = new Vector2(self.X, self.Y);
+                self.GameMgr.Game.GameComponent.SpriteB.DrawString(self.GameMgr.Game.FontMgr.Courier, self.Name, p, Color.Red);
+            }
+        ]]>
+    </Handler>
+  </Class>
+
+
+</Library>
+

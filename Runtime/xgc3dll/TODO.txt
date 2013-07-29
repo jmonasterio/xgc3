@@ -1,0 +1,73 @@
+- Resources are now props -- how to style them? NO longer strings.
+- When to load resources -- At load content OR lazy load.
+- Implement the "resource collection"
+- Resources have to be children of room -lame.
+- Should DRAW be part of update? Don't want to draw DESTROYED components.
+
+
+
+- PROBLEMS WITH BY BUTTON
+	- Is my focus handling really any good?
+	- Clip text in the button: http://forums.xna.com/forums/t/11244.aspx
+	- Cache full button texture???
+	
+- HOW DYNAMICALLY UPLOAD CONTENT PIPELINE, WITHOUT HAVING TO TO IT AT DESIGN TIME.
+
+- TEXT BOX, LABEL, BUTTON and FOCUS
+
+- SILVERLIGHT DEMO...
+
+
+
+- NUNIT
+
+- ENUM support in language, to create new ENUMs
+
+
+- INTELLISENSE:
+			I case somebody interested using Visual Studio to edit single source files with IntelliSense, it's simple. Make a project, add a source file to it but add it as linked file. You do this with "Add Existing Item" which opens a file browser dialog where is a dropdown button with this option. Then write a little application, that edit the project file to replace the linked file with the file you want to edit and then launches the project. My application that does this looks like this:
+
+			Public Class EditQuickApplication
+			Public Shared Sub Main()
+			Try
+			Dim args As New List(Of String)(Environment.GetCommandLineArgs)
+			args.RemoveAt(0)
+
+			Dim projectPath As String = "D:\Projekte\Scripting\Scripting.vbproj"
+			Dim vspath As String = "C:\Programme\Microsoft Visual Studio 8\Common7\IDE\vbexpress.exe"
+
+			Dim content As String
+			Dim encoding As Encoding
+
+			Using sr As New StreamReader(File.OpenRead(projectPath))
+			content = sr.ReadToEnd()
+			encoding = sr.CurrentEncoding
+			End Using
+
+			Dim m As Match
+			Dim pattern As String = "\s+<Link>(.+)</Link>"
+
+			m = Regex.Match(content, pattern)
+			content = content.Remove(m.Groups(1).Index, m.Groups(1).Length)
+			content = content.Insert(m.Groups(1).Index, args(0))
+
+			m = Regex.Match(content, pattern)
+			content = content.Remove(m.Groups(2).Index, m.Groups(2).Length)
+			content = content.Insert(m.Groups(2).Index, Path.GetFileName(args(0)))
+
+			Using sw As New StreamWriter(File.Create(projectPath), encoding)
+			sw.Write(content)
+			End Using
+
+			Process.Start(vspath, """" + projectPath + """ /command ""File.OpenFile " + _
+			Path.GetFileName(args(0)) + """")
+			Catch ex As Exception
+			MsgBox(ex.ToString, MsgBoxStyle.Information)
+			End Try
+			End Sub
+			End Class
+
+
+			You might as well use a different file extension for you source file because VS 2005 allows you to map file extension to editor types (located at: Text Editor/File Extension). You can then compile the source file with a single line batch file or another application like I do or use a solution like presented here.
+
+			VS 2005 adds even a bunch of files more to a project/solution so a single file application is very desirable. There is so many things that need a few lines code and creating projects for this would be cruel.
